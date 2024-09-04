@@ -55,18 +55,6 @@
         </div>
     </div>
 </main>
-
-<script>
-    document.getElementById('searchForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const input = document.getElementById('searchInput').value;
-
-        const encodedInput = encodeURIComponent(input);
-
-        window.location.href = '/pizzas/findByNameContains/' + encodedInput;
-    });
-</script>
 <th:block th:replace="~{/components/fragments :: scripts}"></th:block>
 </body>
 </html>

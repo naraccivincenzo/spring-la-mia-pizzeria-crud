@@ -23,9 +23,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}" th:classappend="${route == 'homepage' ? 'active' : ''}">Home</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" th:href="@{/pizzas}" th:classappend="${route == 'pizzas' ? 'active' : ''}">Pizzas</a>
                 </li>
             </ul>
@@ -33,9 +30,10 @@
     </div>
 </nav>
 
-    <!-- Fragment for Bootstrap script -->
+    <!-- Fragment for scripts -->
     <th:block th:fragment="scripts">
         <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+        <script th:src="@{/main.js}"></script>
     </th:block>
 
 
