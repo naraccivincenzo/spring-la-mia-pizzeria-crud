@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -15,13 +16,17 @@ import java.util.List;
 @RequestMapping("/pizzas")
 public class PizzaController {
 
-    //repository field con autowired per d.i.
     @Autowired
     private PizzaRepository repo;
 
     @GetMapping()
-    public String pizzas(Model model) {
-        List<Pizza> pizzas = repo.findAll();
+    public String pizzas(Model model, @RequestParam(name = "name", required = false) String name) {
+        List<Pizza> pizzas;
+        if(name != null && !name.isEmpty()) {
+            pizzas = repo.findByNameContainingIgnoreCaseOrderByNameAsc(name);
+        } else {
+            pizzas = repo.findAll();
+        }
         model.addAttribute("pizza", pizzas);
         return "/pizzas/index";
     }
@@ -32,9 +37,4 @@ public class PizzaController {
         return "/pizzas/show";
     }
 
-    @GetMapping("/findByNameContains/{name}")
-    public String findByNameContains(@PathVariable("name") String name, Model model) {
-        model.addAttribute("pizza", repo.findByNameContains(name));
-        return "/pizzas/index";
-    }
 }

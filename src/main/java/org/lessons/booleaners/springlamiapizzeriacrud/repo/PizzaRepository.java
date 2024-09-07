@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PizzaRepository extends JpaRepository<Pizza, Integer> {
 
-    List<Pizza> findByNameContains(String name);
+    List<Pizza> findByNameContainingIgnoreCaseOrderByNameAsc(String name);
 }

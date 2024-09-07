@@ -17,7 +17,7 @@ public class Pizza {
     @Lob
     private String description;
 
-    @Column
+    @Column(length = 500)
     private String photo;
 
     @Column(name = "price" , nullable = false)
