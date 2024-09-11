@@ -1,8 +1,14 @@
 package org.lessons.booleaners.springlamiapizzeriacrud.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
+import java.text.NumberFormat;
+import java.time.Instant;
+import java.util.Locale;
 
 @Entity
 @Table(name = "pizzas")
@@ -11,19 +17,28 @@ public class Pizza {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull
+    @Size(min = 2, max = 255)
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NotNull
+    @Size(min = 10)
     @Lob
     private String description;
 
+    @NotNull
+    @Size(min = 2, max = 500)
     @Column(length = 500)
     private String photo;
 
+    @NotNull
+    @Positive
     @Column(name = "price" , nullable = false)
     private Double price;
 
-    private LocalDateTime updatedAt;
+    @UpdateTimestamp
+    private Instant updatedAt;
 
     public Integer getId() {
         return id;
@@ -57,19 +72,22 @@ public class Pizza {
         this.photo = photo;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getPrice(){ return price; }
+
+    public String getFormattedPrice() {
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.ITALY);
+        return currencyFormatter.format(this.price);
     }
 
     public void setPrice(Double price) {
         this.price = price;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Instant getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

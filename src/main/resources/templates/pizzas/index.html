@@ -35,7 +35,7 @@
                     <td class="col-3">
                         <img th:src="${pizza.photo}" alt="photo of the pizza" class="img-thumbnail w-50">
                     </td>
-                    <td th:text="'€ ' + ${pizza.price}"></td>
+                    <td th:text="${pizza.getFormattedPrice}"></td>
                     <td>
                         <a th:href="@{/pizzas/{id}(id=${pizza.id})}" class="btn btn-sm btn-primary">Show</a>
                         <a class="btn btn-sm btn-success">Edit</a>
