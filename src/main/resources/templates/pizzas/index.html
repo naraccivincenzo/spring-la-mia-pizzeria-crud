@@ -11,6 +11,15 @@
     <div class="row">
         <div class="col-12">
             <h1 class="py-3 text-center">List of available pizzas</h1>
+            <th:block th:if="${deleteMessage != null}">
+                <div th:replace="~{/components/fragments :: deleteAlert(${deleteMessage})}"></div>
+            </th:block>
+            <th:block th:if="${updateMessage != null}">
+                <div th:replace="~{/components/fragments :: successAlert(${updateMessage})}"></div>
+            </th:block>
+            <th:block th:if="${createMessage != null}">
+                <div th:replace="~{/components/fragments :: successAlert(${createMessage})}"></div>
+            </th:block>
             <form id="searchForm" class="d-flex" th:action="@{/pizzas}" method="GET">
                 <input id="searchInput" class="form-control me-2" type="text" name="name" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success col-3 me-2" type="submit">Search</button>
@@ -40,9 +49,33 @@
                     <td>
                         <a th:href="@{/pizzas/{id}(id=${pizza.id})}" class="btn btn-sm btn-primary">Show</a>
                         <a th:href="@{/pizzas/edit/{id}(id=${pizza.id})}" class="btn btn-sm btn-success">Edit</a>
-                        <a class="btn btn-sm btn-warning">Delete</a>
-                    </td>
 
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" th:data-bs-target="'#delete-modal-' + ${pizza.id}">
+                            Delete
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" th:id="'delete-modal-' + ${pizza.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Deleting [[${pizza.name}]]</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure that you want to PERMANENTLY delete [[${pizza.name}]]?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <form class="d-inline-block" th:action="@{/pizzas/delete/{id}(id = ${pizza.id})}" method="POST">
+                                            <button class="btn btn-sm btn-danger" onclick="return ">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
 

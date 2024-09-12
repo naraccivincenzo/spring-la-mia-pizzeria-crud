@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -43,11 +44,13 @@ public class PizzaController {
     }
 
     @PostMapping("/create")
-    public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult, Model model) {
+    public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult, RedirectAttributes attributes) {
         if (bindingResult.hasErrors()) {
             return "/pizzas/create";
         }
         repo.save(formPizza);
+        attributes.addFlashAttribute("createMessage", "Pizza " + formPizza.getName() + " successfully inserted");
+
         return "redirect:/pizzas";
     }
 
@@ -58,12 +61,21 @@ public class PizzaController {
     }
 
     @PostMapping("/edit/{id}")
-    public String update(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult, Model model) {
+    public String update(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult, RedirectAttributes attributes) {
 
         if (bindingResult.hasErrors()) {
             return "/pizzas/edit";
         }
         repo.save(formPizza);
+        attributes.addFlashAttribute("updateMessage", "Pizza " + formPizza.getName() + " successfully updated");
+
+        return "redirect:/pizzas";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Integer id, RedirectAttributes attributes) {
+        repo.deleteById(id);
+        attributes.addFlashAttribute("deleteMessage", "Pizza " + id + " successfully deleted");
         return "redirect:/pizzas";
     }
 }
